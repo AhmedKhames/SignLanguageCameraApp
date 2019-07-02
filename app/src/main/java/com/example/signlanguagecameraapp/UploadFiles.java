@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.ExifInterface;
+import android.media.MediaPlayer;
 import android.media.audiofx.DynamicsProcessing;
 import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
@@ -31,8 +32,10 @@ import java.net.Socket;
 import java.net.URL;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.jar.Attributes;
 
 
@@ -56,20 +59,43 @@ public class UploadFiles extends AsyncTask<String, Void, String> {
     private String lineRead,res,arabicResponse;
     private TextToSpeech textToSpeech;
     private int  index;
-    private String[] class_list = {"أنا","يغلق","يستمر","يأكل","فين(أين)","يسمع","يفتح","قصير","طويل","يشاهد"};
+    private String[] classList = {"أنا","يغلق","يستمر","يأكل","فين(أين)","يسمع","يفتح","قصير","طويل","يشاهد"};
+    private MediaPlayer fen,open,close,eat,continueVerb,listen,shortWord,tall,watch,ana,value;
+    //private  ArrayList<MediaPlayer> predictionVoice;
+    private Map<Integer,MediaPlayer> predictionVoice;
 
-    UploadFiles(String address,File in,TextView tv){
-        serverUrl = address;
-        myFile = in;
-        resTextView = tv;
-
-    }
 
     UploadFiles(Context context,String address,File in,TextView tv){
         serverUrl = address;
         myFile = in;
         resTextView = tv;
+
+        fen = MediaPlayer.create(context,R.raw.fen);
+        ana = MediaPlayer.create(context,R.raw.ana);
+        eat = MediaPlayer.create(context,R.raw.eat);
+        close = MediaPlayer.create(context,R.raw.close);
+        open = MediaPlayer.create(context,R.raw.open);
+        continueVerb = MediaPlayer.create(context,R.raw.continue_verb);
+        listen = MediaPlayer.create(context,R.raw.listen);
+        shortWord = MediaPlayer.create(context,R.raw.short_word);
+        tall = MediaPlayer.create(context,R.raw.tall);
+        watch = MediaPlayer.create(context,R.raw.watch);
+
+        predictionVoice = new HashMap<Integer, MediaPlayer>();
+
+        predictionVoice.put(0,ana);
+        predictionVoice.put(1,close);
+        predictionVoice.put(2,continueVerb);
+        predictionVoice.put(3,eat);
+        predictionVoice.put(4,fen);
+        predictionVoice.put(5,listen);
+        predictionVoice.put(6,open);
+        predictionVoice.put(7,shortWord);
+        predictionVoice.put(8,tall);
+        predictionVoice.put(9,watch);
+
     }
+
 
     @Override
     protected String doInBackground(String... strings) {
@@ -118,7 +144,8 @@ public class UploadFiles extends AsyncTask<String, Void, String> {
             Toast.makeText(context, "NULL", Toast.LENGTH_SHORT).show();
         } else {
             index = Integer.parseInt(result);
-            resTextView.setText(class_list[index]);
+            resTextView.setText(classList[index]);
+            predictionVoice.get(index).start();
         }
     }
 }

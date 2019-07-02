@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity  implements SurfaceHolder.Ca
                         fileOutputStream = new FileOutputStream(imgFile);
                         fileOutputStream.write(compressedImage.toByteArray());
                         fileOutputStream.flush();
-                        uploadFiles = new UploadFiles(URL,imgFile,resultTextView);
+                        uploadFiles = new UploadFiles(getApplicationContext(),URL,imgFile,resultTextView);
                         uploadFiles.execute();
                         fileOutputStream.close();
                     }catch (Exception e){
