@@ -55,7 +55,8 @@ public class UploadFiles extends AsyncTask<String, Void, String> {
     private BufferedReader httpResponseReader;
     private String lineRead,res,arabicResponse;
     private TextToSpeech textToSpeech;
-    private int  speech;
+    private int  index;
+    private String[] class_list = {"أنا","يغلق","يستمر","يأكل","فين(أين)","يسمع","يفتح","قصير","طويل","يشاهد"};
 
     UploadFiles(String address,File in,TextView tv){
         serverUrl = address;
@@ -116,56 +117,8 @@ public class UploadFiles extends AsyncTask<String, Void, String> {
         if (result == null){
             Toast.makeText(context, "NULL", Toast.LENGTH_SHORT).show();
         } else {
-            resTextView.setText(arabicWord(result));
+            index = Integer.parseInt(result);
+            resTextView.setText(class_list[index]);
         }
     }
-
-
-    private String arabicWord(String responseMessage){
-        arabicResponse = null;
-    switch (responseMessage){
-            case "tall":
-                arabicResponse = "طويل";
-                break;
-            case "close":
-                arabicResponse = "يغلق";
-                break;
-            case "open":
-                arabicResponse = "يفتح";
-                break;
-            case "fen":
-                arabicResponse = "فين(أين)";
-                break;
-            case "short":
-                arabicResponse = "قصير";
-                break;
-            case "watch":
-                arabicResponse = "يشاهد";
-                break;
-            case "listen":
-                arabicResponse = "يسمع";
-                break;
-            case "continue":
-                arabicResponse = "يستمر";
-                break;
-            case "eat":
-                arabicResponse = "يأكل";
-                break;
-        }
-        return arabicResponse;
-    }
-
-    private void textToSpeech(Context appContext){
-        textToSpeech = new TextToSpeech(appContext, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                if (i == TextToSpeech.SUCCESS){
-                    speech = textToSpeech.setLanguage(Locale.ENGLISH);
-                }
-            }
-        });
-
-
-    }
-
 }

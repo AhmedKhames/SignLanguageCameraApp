@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity  implements SurfaceHolder.Ca
     private int cnt;
     private String pictureFilePath;
     private  UploadFiles uploadFiles;
-    private String URL = "http://192.168.1.7:5000";
+    private String URL = "http://192.168.1.4:5000";
     private Timer timer;
 
 
